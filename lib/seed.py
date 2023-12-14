@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 from models import Cleaner, Client, CleaningTask, ClientTask, Base
 
-
+# for generating fake values/dummy data
 fake = Faker()
 
 experience_levels = ["junior", "intermediate", "senior"]
@@ -53,8 +53,6 @@ cleaning_tasks = [
         "task_description": "Dryer Vent Cleaning",
         "price": 600
     },
-
-
 ]
 
 
@@ -65,50 +63,63 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
 
+    # !empty tables then fill upon commence
     session.query(Cleaner).delete()
     session.query(CleaningTask).delete()
     session.query(Client).delete()
     session.query(ClientTask).delete()
 
-    for _ in range(5):
+    # !insert 5 cleaner instances/objects
+    for item in range(5):
         cleaner = Cleaner(
             full_name=fake.unique.name(),
             contact_number=fake.phone_number(),
             experience_level=random.choice(experience_levels)
         )
 
+        # using session.add() guarantees id will be updated
         session.add(cleaner)
         session.commit()
 
+    # !insert 10 cleaning_tasks instances/objects
     for item in cleaning_tasks:
         cleaning_task = CleaningTask(
             task_description=item["task_description"],
             price=item["price"],
             cleaner_id=random.randint(1, 5)
         )
+
         session.add(cleaning_task)
         session.commit()
 
-    for _ in range(15):
+    # !insert 15 client instances/objects
+    for item in range(15):
         client = Client(
             client_name=fake.unique.name(),
             email=fake.email(),
             password=fake.password(length=12),
             contact_number=fake.phone_number()
         )
+
         session.add(client)
         session.commit()
 
+    # task_ids list comprehension/tasks will have been inserted atp
     task_ids = [task.task_id for task in session.query
                 (CleaningTask)]
+
+    # client_ids list comprehension/cliebts will have been inserted atp
     client_ids = [client.client_id for client in session.query(Client)]
 
-    for _ in range(10):
+    # !map client_ids to task_ids/Association/10 instances
+    for item in range(10):
         client_task = ClientTask(
             client_id=random.choice(client_ids),
             task_id=random.choice(task_ids)
         )
+
         session.add(client_task)
         session.commit()
 
+    # terminate session
     session.close()
