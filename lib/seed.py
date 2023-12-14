@@ -62,7 +62,6 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
-
     # !empty tables then fill upon commence
     session.query(Cleaner).delete()
     session.query(CleaningTask).delete()
