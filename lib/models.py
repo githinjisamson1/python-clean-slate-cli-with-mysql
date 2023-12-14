@@ -1,15 +1,13 @@
 from sqlalchemy import create_engine, desc
 from sqlalchemy import (CheckConstraint, UniqueConstraint,
                         Column, DateTime, Integer, String, ForeignKey)
-from sqlalchemy.orm import relationship, backref
-
+from sqlalchemy.orm import relationship, backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-
-engine = create_engine('sqlite:///clean_slate.db')
 
 Base = declarative_base()
 
-# !models
+
+# TODO: Cleaner Model
 
 class Cleaner(Base):
     # name
@@ -30,6 +28,8 @@ class Cleaner(Base):
             + f"{self.full_name}, " \
             + f"Experience Level {self.experience_level}"
 
+
+# TODO: Client Model
 
 class Client(Base):
     # name
@@ -56,6 +56,8 @@ class Client(Base):
             + f"{self.client_name}, " \
 
 
+# TODO: CleaningTask Model
+
 
 class CleaningTask(Base):
     # name
@@ -80,7 +82,9 @@ class CleaningTask(Base):
             + f"Price  {self.price}: " \
 
 
-# intermediary/Association Object/CLIENTTASKASSIGNMENT
+# TODO: ClientTask Model
+# intermediary/Association Object
+
 
 class ClientTask(Base):
     # name
@@ -102,6 +106,9 @@ class ClientTask(Base):
         return f'ClientTask(game_id={self.client_id}, ' + \
             f'task_id={self.task_id})'
 
-# TODO:
-# How to use Click/Fire?
-# How to implement user authentication?
+# avoid Base.metadata/tables are already created using seed.py
+engine = create_engine('sqlite:///clean_slate.db')
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# !work with clean_slate outside lib/
