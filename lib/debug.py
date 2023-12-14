@@ -3,6 +3,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+# TODO: use debug.py for testing purposes
+# !import models to be tested
+
 from models import Cleaner, Client, CleaningTask, ClientTask
 
 if __name__ == '__main__':
