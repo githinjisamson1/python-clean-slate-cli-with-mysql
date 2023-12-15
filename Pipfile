@@ -12,6 +12,7 @@ importlib-resources = "*"
 faker = "*"
 click = "*"
 colorama = "*"
+rich = "*"
 
 [dev-packages]
 

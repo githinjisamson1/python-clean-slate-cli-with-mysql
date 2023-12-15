@@ -62,7 +62,8 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
-    # !empty tables then fill upon commence
+    
+    # !empty tables then fill upon running seed.py
     session.query(Cleaner).delete()
     session.query(CleaningTask).delete()
     session.query(Client).delete()
@@ -107,7 +108,7 @@ if __name__ == '__main__':
     task_ids = [task.task_id for task in session.query
                 (CleaningTask)]
 
-    # client_ids list comprehension/cliebts will have been inserted atp
+    # client_ids list comprehension/clients will have been inserted atp
     client_ids = [client.client_id for client in session.query(Client)]
 
     # !map client_ids to task_ids/Association/10 instances
