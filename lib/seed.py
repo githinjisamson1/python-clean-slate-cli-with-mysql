@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import mysql.connector
 from faker import Faker
 import random
 from sqlalchemy import create_engine
@@ -58,7 +59,8 @@ cleaning_tasks = [
 
 if __name__ == '__main__':
 
-    engine = create_engine('sqlite:///clean_slate.db')
+    engine = create_engine(
+        'mysql+mysqlconnector://root:27511112086/2019@localhost:3306/clean_slate_db')
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -73,7 +75,7 @@ if __name__ == '__main__':
     for item in range(5):
         cleaner = Cleaner(
             full_name=fake.unique.name(),
-            contact_number=fake.phone_number(),
+            contact_number=fake.numerify(text="##########" ),
             experience_level=random.choice(experience_levels)
         )
 
@@ -98,7 +100,7 @@ if __name__ == '__main__':
             client_name=fake.unique.name(),
             email=fake.email(),
             password=fake.password(length=12),
-            contact_number=fake.phone_number()
+            contact_number=fake.numerify(text="##########"),
         )
 
         session.add(client)

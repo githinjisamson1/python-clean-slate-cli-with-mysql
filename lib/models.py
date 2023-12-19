@@ -1,8 +1,10 @@
 from sqlalchemy import create_engine, desc
 from sqlalchemy import (CheckConstraint, UniqueConstraint,
-                        Column, DateTime, Integer, String, ForeignKey)
+                        Column, DateTime, Integer, BigInteger, String, ForeignKey)
 from sqlalchemy.orm import relationship, backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+
+import mysql.connector
 
 Base = declarative_base()
 
@@ -15,14 +17,14 @@ class Cleaner(Base):
 
     # columns
     cleaner_id = Column(Integer(), primary_key=True)
-    full_name = Column(String(25))
-    contact_number = Column(Integer())
-    experience_level = Column(String())
+    full_name = Column(String(50))
+    contact_number = Column(BigInteger)
+    experience_level = Column(String(50))
 
     # !relationship with CleaningTask on cleaner
     cleaning_tasks = relationship("CleaningTask", backref="cleaner")
 
-    # string representation
+    # string 50representation
     def __repr__(self):
         return f"Cleaner {self.cleaner_id}: " \
             + f"{self.full_name}, " \
@@ -41,16 +43,16 @@ class Client(Base):
 
     # columns
     client_id = Column(Integer(), primary_key=True)
-    client_name = Column(String(25))
-    email = Column(String())
-    password = Column(String())
-    contact_number = Column(Integer())
+    client_name = Column(String(50))
+    email = Column(String(50))
+    password = Column(String(50))
+    contact_number = Column(BigInteger)
 
     # !relationship with ClientTask on client
     # ClientTask must have client
     cleaning_tasks = relationship("ClientTask", back_populates="client")
 
-    # string representation
+    # string 50representation
     def __repr__(self):
         return f"Client {self.client_id}: " \
             + f"{self.client_name}, " \
@@ -65,8 +67,8 @@ class CleaningTask(Base):
 
     # columns
     task_id = Column(Integer(), primary_key=True)
-    task_description = Column(String())
-    price = Column(String())
+    task_description = Column(String(50))
+    price = Column(String(50))
 
     # ForeignKey cleaner_id
     cleaner_id = Column(Integer(), ForeignKey("cleaners.cleaner_id"))
@@ -75,7 +77,7 @@ class CleaningTask(Base):
     # ClientTask must have task
     clients = relationship("ClientTask", back_populates="task")
 
-    # string representation
+    # string 50representation
     def __repr__(self):
         return f"Cleaning Task {self.task_id}: " \
             + f"{self.task_description}, " \
@@ -101,13 +103,15 @@ class ClientTask(Base):
     # !relationship with CleaningTask on clients
     task = relationship('CleaningTask', back_populates='clients')
 
-    # string representation
+    # string 50representation
     def __repr__(self):
         return f'ClientTask(game_id={self.client_id}, ' + \
             f'task_id={self.task_id})'
 
+
 # avoid Base.metadata/tables are already created using seed.py
-engine = create_engine('sqlite:///clean_slate.db')
+engine = create_engine(
+    'mysql+mysqlconnector://root:27511112086/2019@localhost:3306/clean_slate_db')
 Session = sessionmaker(bind=engine)
 session = Session()
 

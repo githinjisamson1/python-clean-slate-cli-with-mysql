@@ -13,6 +13,7 @@ faker = "*"
 click = "*"
 colorama = "*"
 rich = "*"
+mysql-connector-python = "*"
 
 [dev-packages]
 
