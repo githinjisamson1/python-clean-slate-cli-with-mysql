@@ -80,5 +80,8 @@ Follow the following instructions to get Clean Slate CLI up and running
 Phase 4 project :)
 ## Feedback
 
-If you have any feedback, please reach out to us at githinjisamson148@gmail.com
+If you have any feedback, please reach out to us at samson.githinji@student.moringaschool.com, allan.njoroge@student.moringaschool.com, mercy.mwongeli@student.moringaschool.com, nahason.murithi@student.moringaschool.com, noni.muthoni@student.moringaschool.com
+
+
+
 
